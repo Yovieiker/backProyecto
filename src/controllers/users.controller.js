@@ -5,8 +5,23 @@ const jwt = require("jsonwebtoken");
 const getUsers = async (req, res) => {
   try {
     const connection = await getConnection();
-    const result = await connection.query("SELECT * FROM usuarios");
-    console.log(result);
+    const result = await connection.query(
+      "SELECT * FROM usuarios WHERE estado = 'activo'"
+    );
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+//obtener lista de todos los usuarios cancelados
+
+const getUsersCanceled = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const result = await connection.query(
+      "SELECT * FROM usuarios WHERE estado = 'cancelado'"
+    );
     res.json(result);
   } catch (error) {
     console.log(error);
@@ -134,6 +149,23 @@ const getProfile = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+//devolver todo datos de todos los usuarios que hayan hecho checkout
+
+//obtener total de usuarios registrado
+
+// const getTotalUsers = async (req, res) => {
+//   try {
+//     const connection = await getConnection();
+//     const result = await connection.query(
+//       "SELECT COUNT(*) as total FROM usuarios"
+//     );
+//     const totalUsers = result[0].total;
+//     res.json({ totalUsers });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// };
 
 export const methods = {
   getUsers,
@@ -141,4 +173,6 @@ export const methods = {
   loginUser,
   getUser,
   getProfile,
+  // getTotalUsers,
+  getUsersCanceled,
 };

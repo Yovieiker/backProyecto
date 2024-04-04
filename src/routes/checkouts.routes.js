@@ -14,8 +14,14 @@ const checkoutValidations = [
   body("ciudad").isLength({ min: 1, max: 255 }).notEmpty(),
   body("direccion").isLength({ min: 1, max: 255 }).notEmpty(),
   body("metodo_pago").isLength({ min: 1, max: 255 }).notEmpty(),
+  body("edad").isNumeric().notEmpty(),
 ];
 // Ruta para crear un checkout
 router.post("/", checkoutValidations, checkoutController.createCheckout);
+router.get("/cantidad", checkoutController.cantidadVentas);
+router.get("/datos", checkoutController.getTotalCheckout);
+router.get("/promedio", checkoutController.datosPromedio);
+router.get("/edadpromedio", checkoutController.obtenerPorcentajeEdad);
 router.get("/", checkoutController.getCheckout);
+router.get("/:id", checkoutController.getCheckoutById);
 export default router;

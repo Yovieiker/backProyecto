@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { methods as usersController } from "../controllers/users.controller";
+import { methods as adminController } from "../controllers/admin.controller";
 const router = Router();
 const jwt = require("jsonwebtoken");
 
@@ -23,13 +24,21 @@ const authenticateToken = (req, res, next) => {
     return res.status(401).json({ error: "Token de autenticación inválido" });
   }
 };
-
+//admin
+//login
 router.get("/", usersController.getUsers);
+router.get("/cancelados", usersController.getUsersCanceled);
+// router.get("/totalusuarios", usersController.getTotalUsers);
+
 router.post("/", usersController.createUser);
+router.post("/admin/login", adminController.loginAdmin);
+
 router.post("/login", usersController.loginUser);
 // router.get("/logout",usersController.logoutUser )
 router.get("/:id/profile", authenticateToken, usersController.getProfile);
 // router.put("/profile",usersController.updateProfile )
 // router.delete("/profile",usersController.deleteProfile )
 router.get("/:id", usersController.getUser);
+router.post("/admin/:id", authenticateToken, adminController.createAdmin);
+router.get("/admin/:id", authenticateToken, adminController.getAdmin);
 export default router;
